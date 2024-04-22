@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="ar">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AW - تەسبیح</title>
+    <style>
+        /* CSS Variables for light and dark mode */
+        :root {
+            /* Light mode colors */
+            --background-color: #f2f2f2;
+            --container-color: #fff;
+            --text-color: #090909;
+            --button-color: #e8e8e8;
+            --button-hover-color: #ffffff;
+            --button-active-color: #c5c5c5;
+            --button-text-color: #090909;
+
+            /* Dark mode colors */
+            --dark-background-color: #333;
+            --dark-container-color: #444;
+            --dark-text-color: #f2f2f2;
+            --dark-button-color: #555;
+            --dark-button-hover-color: #666;
+            --dark-button-active-color: #777;
+            --dark-button-text-color: #f2f2f2;
+        }
+
+        /* CSS Styles */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: var(--background-color);
+        }
+
+        .tasbih-container {
+            text-align: center;
+            background-color: var(--container-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .count {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        /* Button styles */
+        button {
+            color: var(--button-text-color);
+            padding: 0.7em 1.7em;
+            font-size: 18px;
+            border-radius: 0.5em;
+            background: var(--button-color);
+            cursor: pointer;
+            border: 1px solid var(--button-color);
+            transition: all 0.3s;
+            box-shadow: 6px 6px 12px var(--button-active-color), -6px -6px 12px var(--button-hover-color);
+        }
+
+        button:hover {
+            border: 1px solid white;
+        }
+
+        button:active {
+            box-shadow: 4px 4px 12px var(--button-active-color), -4px -4px 12px var(--button-hover-color);
+        }
+
+        button:disabled {
+            background-color: #a2a2a2;
+            cursor: not-allowed;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 600px) {
+            .count {
+                font-size: 36px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 0.5em 1.5em;
+            }
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: var(--dark-background-color);
+        }
+
+        .tasbih-container.dark-mode {
+            background-color: var(--dark-container-color);
+        }
+
+        button.dark-mode {
+            color: var(--dark-button-text-color);
+            background-color: var(--dark-button-color);
+            box-shadow: 6px 6px 12px var(--dark-button-active-color), -6px -6px 12px var(--dark-button-hover-color);
+        }
+
+        
+        .switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        
+        .switch label {
+            font-size: 20px;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 5px;
+            margin: 0;
+        }
+
+        
+        .switch label.light-mode-icon {
+            content: '☀️';
+        }
+
+        .switch label.dark-mode-icon {
+            content: '🌙';
+        }
+
+        
+        .switch.dark-mode label {
+            color: var(--dark-text-color);
+        }
+
+        
+        .message {
+            font-size: 16px;
+            color: var(--text-color);
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .message.dark-mode {
+            color: var(--dark-text-color);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tasbih-container">
+        <div class="message" id="message">You have completed one set of 33 recitations!</div>
+        <div class="count" id="count">0</div>
+        <button id="countButton">زیکر</button>
+        <button id="resetButton">گەڕاندنەوە</button>
+    </div>
+
+    <!-- Dark mode toggle switch -->
+    <div class="switch">
+        <input type="checkbox" id="darkModeToggle">
+        <label for="darkModeToggle" class="light-mode-icon">☀️</label>
+        <label for="darkModeToggle" class="dark-mode-icon">🌙</label>
+    </div>
+
+    <script>
+       
+
+        
+        const countElement = document.getElementById('count');
+        const countButton = document.getElementById('countButton');
+        const resetButton = document.getElementById('resetButton');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const messageElement = document.getElementById('message');
+
+       
+        let count = 0;
+        let cycle = 0; 
+
+        
+        function updateCount() {
+            countElement.textContent = count;
+        }
+
+        
+        countButton.addEventListener('click', () => {
+            // Increment the count
+            count++;
+            updateCount();
+
+
+            if (count === 33) {
+                if (cycle === 0) {
+                    messageElement.textContent = 'Subhan Allah';
+                } else if (cycle === 1) {
+                    messageElement.textContent = 'Praise be to Allah';
+                } else if (cycle === 2) {
+                    messageElement.textContent = 'Allahu Akbar';
+                }
+                
+                
+                messageElement.style.display = 'block';
+                
+                
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                    
+                    count = 0;
+                    updateCount();
+                    
+                    
+                    cycle++;
+                    if (cycle === 3) {
+                        
+                        window.close();
+                    }
+                }, 2000);
+            }
+        });
+
+        // Event listener for the reset button
+        resetButton.addEventListener('click', () => {
+            // Reset the count to 0
+            count = 0;
+            updateCount();
+
+            // Reset the cycle to 0
+            cycle = 0;
+            updateCount();
+
+            // Enable the count button
+            countButton.disabled = false;
+        });
+
+        
+        darkModeToggle.addEventListener('change', () => {
+            document.body.classList.toggle('dark-mode');
+            document.querySelector('.tasbih-container').classList.toggle('dark-mode');
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.classList.toggle('dark-mode');
+            });
+            const switchElement = document.querySelector('.switch');
+            switchElement.classList.toggle('dark-mode');
+            // Toggle message text color based on dark mode
+            messageElement.classList.toggle('dark-mode');
+        });
+
+        // Initial update of the count display
+        updateCount();
+    </script>
+</body>
+
+</html>
